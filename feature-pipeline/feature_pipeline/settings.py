@@ -36,9 +36,9 @@ def load_env_vars(root_dir: Union[str, Path]) -> dict:
 
         return Path(os.getenv("ML_PIPELINE_ROOT_DIR", default_value))
 
-        
-        ML_PIPELINE_ROOT_DIR = get_root_dir()        
+        ML_PIPELINE_ROOT_DIR = get_root_dir()   
         OUTPUTS_DIR = ML_PIPELINE_ROOT_DIR / "output" 
         OUTPUTS_DIR.mkdir(parents=True, exist_ok=True) 
+       
 
         SETTINGS = load_env_vars(root_dir=ML_PIPELINE_ROOT_DIR) #
