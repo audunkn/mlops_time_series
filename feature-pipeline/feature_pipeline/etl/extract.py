@@ -55,3 +55,8 @@ def _compute_extraction_window(export_end_reference_datetime: datetime.datetime,
             )
         
         return export_start, export_end
+
+
+def _extract_records_from_file_url(url: str, export_start: datetime.datetime, export_end: datetime.datetime, datetime_format: str, cache_dir: Optional[Path] = None) -> Optional[pd.DataFrame]:
+    """Extract records from the file backup based on the given export window."""
+    
