@@ -59,4 +59,40 @@ def _compute_extraction_window(export_end_reference_datetime: datetime.datetime,
 
 def _extract_records_from_file_url(url: str, export_start: datetime.datetime, export_end: datetime.datetime, datetime_format: str, cache_dir: Optional[Path] = None) -> Optional[pd.DataFrame]:
     """Extract records from the file backup based on the given export window."""
+
+    if cache_dir is None:
+        cache_dir = settings.OUTPUT_DIR / "data"
+        cache_dir.mkdir(parents=True, exist_ok=True)
+
+    file_path = cache_dir / "ConsumptionDE35Hour.csv"
+    if not file_path.exists():
+        logger.info(f"Downloading data from: {url}")
+
+        try:
+            response = requests.get(url)
+        except requests.exceptions.HTTPError as e:
+            logger.error(
+                f"Response status = {response.status_code}. Could not dowload the file due to {e}"
+            )
+            return None
+        
+        if response.status_code != 200:
+            raise ValueError(f"Response status = {response.status_code}. Could not dowload the file.")
+        
+        with file_path.open("w") as f:
+            f.write(response.text)
+
+        logger.info(f"Succesfully donloaded data to {file_path}")
+    else:
+        logger.info(f"Data already downloaded at {file_path}")
     
+    try:
+        data = pd.read_csv(file_path, delimiter=";")
+    except EmptyDataError:
+        file_path.unlink(missing_ok=True)
+
+        raise ValueError(F"Downloaded file at {file_path} is empty. Could not load it into a DataFrame.")
+
+    records = data[(data["HourUTC"] >= export_start.strftime(datetime_format)) & (data["HourUTC"] < export_end.strftime(datetime_format))]
+
+    return records
