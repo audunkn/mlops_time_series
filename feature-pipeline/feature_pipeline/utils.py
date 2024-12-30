@@ -16,12 +16,12 @@ def get_logger(name: str) -> logging.Logger:
     """
 
     logging.basicConfig(level=logging.INFO) # sensitivity level - captures all informational messages, warnings, and errors, but not debug messages
-    logger = logging.getLogger(name) # creates a new logger instance with the given name
+    logger = logging.getLogger(name) 
 
     return logger
 
 
-def save_json(data: dict, file_name: str, save_dir: str = settings.OUTPUT_DIR): # settings.OUTPUT_DIR is default value for save_dir
+def save_json(data: dict, file_name: str, save_dir: str = settings.OUTPUT_DIR): 
     """
     Save a dictionary as a JSON file.
 
@@ -33,8 +33,8 @@ def save_json(data: dict, file_name: str, save_dir: str = settings.OUTPUT_DIR): 
     Returns: None
     """
 
-    data_path = Path(save_dir) / file_name # creates the complete file path by combining the directory and filename
-    with open(data_path, "w") as f: # context manager (with statement) ensures the file is properly closed even if an error occurs
+    data_path = Path(save_dir) / file_name 
+    with open(data_path, "w") as f: 
         json.dump(data, f)
 
 
