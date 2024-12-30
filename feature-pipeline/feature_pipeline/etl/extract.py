@@ -31,4 +31,27 @@ def _compute_extraction_window(export_end_reference_datetime: datetime.datetime,
     expiring_dataset_datetime = datetime.datetime(2023, 6, 30, 0, 0) + datetime.timedelta(
         days=days_delay
     )
-    
+    if export_end_reference_datetime > expiring_dataset_datetime:
+        export_end_reference_datetime = expiring_dataset_datetime
+
+        logger.warning(
+            "We clapped 'export_end_reference_datetime' to 'datetime(2023, 6, 30) + datetime.timedelta(days=days_delay)' as \
+        the dataset will not be updated starting from July 2023. The dataset will expire during 2023. \
+        Check out the following link for more information: https://www.energidataservice.dk/tso-electricity/ConsumptionDE35Hour"
+        )
+
+        export_end = export_end_reference_datetime - datetime.timedelta(days=days_delay)
+        export_start = export_end_reference_datetime - datetime.timedelta(
+            days=days_delay + days_export
+        )
+
+        min_export_start = datetime.datetime(2020, 6, 30, 0, 0)
+        if export_start < min_export_start:
+            export_start = min_export_start
+            export_end = export_start + datetime.timedelta(days=days_export)
+
+            logger.warning(
+                "We clapped 'export_start' to 'datetime(2020, 6, 30, 22, 0, 0)' and 'export_end' to 'export_start + datetime.timedelta(days=days_export)' as this is the latest window available in the dataset."
+            )
+        
+        return export_start, export_end
