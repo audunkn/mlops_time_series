@@ -12,7 +12,7 @@ from feature_pipeline import utils, settings
 logger = utils.get_logger(__name__)
 
 def from_file(
-    export_end_reference_datetime: Optional[datetime.datetime] = None
+    export_end_reference_datetime: Optional[datetime.datetime] = None,
     days_delay: int = 15,
     days_export: int = 30,
     url: str = "https://drive.google.com/uc?export=download&id=1y48YeDymLurOTUO-GeFOUXVNc9MCApG5",
