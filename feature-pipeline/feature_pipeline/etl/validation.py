@@ -33,7 +33,7 @@ def build_expectaion_suite() -> ExpectationSuite:
     expectation_suite_energy_consumption(
         ExpectationConfiguration(
             expectation_type="expect_columns_values_to_not_be_null",
-            kwargs{"column": "datetime_utc"},
+            kwargs={"column": "datetime_utc"},
         )
     )
 
