@@ -124,8 +124,11 @@ def build_expectaion_suite() -> ExpectationSuite:
             kwargs={"column": "energy_consumption", "type_": "float64"},
         )
     )
+    expectation_suite_energy_consumption.add_expectation(
+        ExpectationConfiguration(
+            expectation_type="expect_column_values_to_not_be_null",
+            kwargs={"column": "energy_consumption"},
+        )
+    )
 
-    
-
-
-
+    return expectation_suite_energy_consumption
